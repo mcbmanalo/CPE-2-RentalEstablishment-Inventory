@@ -1,0 +1,8 @@
+Apartment, Liz-An, Jacinto St. Davao City, 5
+Dormitory, C5-Dormitory, Roxas St. Davao City, 10
+BoardingHouse, Lola's Bhouse, Torres St. Davao City, 2
+Apartment, Ante's, Tiongco St. Davao City, 8
+Dormitory, 100 Dorms, Roxas St. Davao City, 8
+BoardingHouse, Majesty, Bonifacio St. Davao City, 3
+Dormitory, Carmel's, Roxas St. Davao City, 3
+Apartment, Chillin, Bonifacio St. Davao City, 4

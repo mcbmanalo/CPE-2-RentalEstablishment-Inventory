@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="Manalo_Project.Views.WorkerAndDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Manalo_Project.Views"
+             mc:Ignorable="d" 
+             DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment,Source={StaticResource Locator}}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Width="140"
+                    Height="25"
+                    Content="Assign Worker"
+                    Margin="0,0,5,0"
+                    Command="{Binding Path=OpenAssignWorkersWindowCommand}"/>
+
+            <Button  Width="150" 
+                 Height="25"
+                 Content="Add Workers"
+                 Command="{Binding Path=OpenAddWorkersWindowCommand}"></Button>
+
+        </StackPanel>
+     
+        <ListBox ItemsSource="{Binding Path=Workers}"
+                 SelectedItem="{Binding Path=SelectedWorker, UpdateSourceTrigger=PropertyChanged}"
+                 DisplayMemberPath="LastName"
+                 Padding="5,3"
+                 Grid.Row="1"  
+                 Margin="8"></ListBox>
+
+        <TextBlock Grid.Column="1"
+                   Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="Please select a worker"
+                   Foreground="Gray"
+                   Visibility="{Binding Path=SelectedWorker, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"></TextBlock>
+        
+        <StackPanel Grid.Column="1" 
+                    Grid.Row="1"                  
+                    Margin="8"
+                    DataContext="{Binding Path=SelectedWorker}"
+                    Visibility="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.SelectedWorker,Source={StaticResource Locator}, Converter={StaticResource NullToVisibilityConverter}}">
+            
+            <TextBlock Text="Worker's Information" 
+                       FontWeight="Bold"
+                       FontSize="16"
+                       HorizontalAlignment="Center"
+                       Margin="10"></TextBlock>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="Name: "></TextBlock>
+                <TextBlock Text="{Binding Path=LastName}"></TextBlock>
+                <TextBlock Text=", "></TextBlock>
+                <TextBlock Text="{Binding Path=FirstName}"></TextBlock>
+                <TextBlock Text=" "></TextBlock>
+                <TextBlock Text="{Binding Path=MiddleName}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="Gender: "></TextBlock>
+                <TextBlock Text="{Binding Path=Gender}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="Age: "></TextBlock>
+                <TextBlock Text="{Binding Path=Age}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="Contact Number: "></TextBlock>
+                <TextBlock Text="{Binding Path=ContactNumber}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="Assigned Floor: "></TextBlock>
+                <TextBlock Text="{Binding Path=AssignedFloor.FloorNumber}"></TextBlock>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="Job: "></TextBlock>
+                <TextBlock Text="{Binding Path=Job}"></TextBlock>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

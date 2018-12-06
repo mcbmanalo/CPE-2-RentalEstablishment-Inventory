@@ -1,0 +1,188 @@
+﻿<UserControl x:Class="Manalo_Project.Views.TenantAndDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Manalo_Project.Views"
+             mc:Ignorable="d" 
+             DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment,Source={StaticResource Locator}}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel  Grid.Row="0"
+                     Grid.ColumnSpan="2"
+                     Margin="5"
+                     Orientation="Horizontal"
+                     HorizontalAlignment="Right">
+            <Button Width="160"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding Path=UpdateBalanceCommand}"
+                    Content="Update Balance"></Button>
+            <Button Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding Path=OpenPayRentWindowCommand}"
+                    Content="Pay Rent"></Button>
+            
+            <Button Width="140"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding Path=RemoveTenantCommand}"
+                    Content="Remove Tenant"></Button>
+
+            <Button Width="140"
+                    Height="25"
+                    Content="Add Tenant"
+                    Command="{Binding Path=OpenAddTenantWindowCommand}"
+                    Margin="0,0,5,0"/>
+
+            <TextBox Text="{Binding Path=SearchTenant, UpdateSourceTrigger=PropertyChanged}"
+                 Width="250" 
+                 Height="25"    
+                 ToolTip="Search box for tenants"
+                 HorizontalAlignment="Right"></TextBox>
+
+        </StackPanel>
+
+        <Grid Margin="8"
+              Grid.Row="1"
+              Grid.Column="0">
+            <ListBox ItemsSource="{Binding Path=AllTenants}"
+                             SelectedItem="{Binding Path=SelectedTenantForDetails}">
+
+                <ListBox.ContextMenu>
+                    <ContextMenu DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment ,Source={StaticResource Locator}}">
+
+                        <MenuItem Header="Sort" >
+                            <MenuItem Header="First Name" Command="{Binding SortFirstName}"></MenuItem>
+                            <MenuItem Header="Middle Name" Command="{Binding SortMiddleName}"></MenuItem>
+                            <MenuItem Header="Last Name" Command="{Binding SortLastName}"></MenuItem>
+                            <MenuItem Header="Age" Command="{Binding SortAge}"></MenuItem>
+                            <MenuItem Header="Gender" Command="{Binding SortGender}"></MenuItem>
+                            <MenuItem Header="Occupation" Command="{Binding SortOccupation}"></MenuItem>
+                            <MenuItem Header="Contact Number" Command="{Binding SortContactNumber}"></MenuItem>
+                        </MenuItem>
+
+                        <Separator />
+
+                        <MenuItem Header="Ascending" IsCheckable="True" IsChecked="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.IsAscending,Source={StaticResource Locator}, UpdateSourceTrigger=PropertyChanged}"></MenuItem>
+                        <MenuItem Header="Descending" IsCheckable="True" IsChecked="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.IsDescending,Source={StaticResource Locator}, UpdateSourceTrigger=PropertyChanged}"></MenuItem>
+
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+
+            </ListBox>
+        </Grid>
+
+        <Grid   Grid.Column="1"
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment, Source={StaticResource Locator}, Converter={StaticResource NullToVisibilityConverter}}">
+
+            <TextBlock Visibility="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.SelectedTenantForDetails, Source={StaticResource Locator}, Converter={StaticResource NullToVisibilityConverter},ConverterParameter=inverse}"
+                       Foreground="Gray"
+                       Text="Please select a tenant"></TextBlock>
+        </Grid>
+
+
+        <StackPanel DataContext="{Binding Path=SelectedTenantForDetails}"
+                    Visibility="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment, Source={StaticResource Locator}, Converter={StaticResource NullToVisibilityConverter}}"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Margin="8">
+            <StackPanel Visibility="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.SelectedTenantForDetails, Source={StaticResource Locator}, Converter={StaticResource NullToVisibilityConverter}}">
+               
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Occupied Room: Number-"></TextBlock>
+                    <TextBlock Text="{Binding OccupiedRoom.RoomNumber}"></TextBlock>
+                    <TextBlock Text=" Floor-"></TextBlock>
+                    <TextBlock Text="{Binding OccupiedRoom.FloorOfRoom.FloorNumber}"></TextBlock>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="First Name: "></TextBlock>
+                    <TextBlock Text="{Binding FirstName}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Middle Name: "></TextBlock>
+                    <TextBlock Text="{Binding MiddleName}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Last Name: "></TextBlock>
+                    <TextBlock Text="{Binding LastName}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Gender: "></TextBlock>
+                    <TextBlock Text="{Binding Gender}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Age: "></TextBlock>
+                    <TextBlock Text="{Binding Age}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Balance: "></TextBlock>
+                    <TextBlock Text="{Binding Balance, StringFormat={}₱{0:N2}}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Occupation: "></TextBlock>
+                    <TextBlock Text="{Binding Occupation}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Contact Number: "></TextBlock>
+                    <TextBlock Text="{Binding ContactNumber}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Father's Name: "></TextBlock>
+                    <TextBlock Text="{Binding FatherOfTenant.LastName}"></TextBlock>
+                    <TextBlock Text=", "></TextBlock>
+                    <TextBlock Text="{Binding FatherOfTenant.FirstName}"></TextBlock>
+                    <TextBlock Text=" "></TextBlock>
+                    <TextBlock Text="{Binding FatherOfTenant.MiddleName}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Father's Contact Number: "></TextBlock>
+                        <TextBlock Text="{Binding FatherOfTenant.ContactNumber}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Mother's Name: "></TextBlock>
+                    <TextBlock Text="{Binding MotherOfTenant.LastName}"></TextBlock>
+                    <TextBlock Text=", "></TextBlock>
+                    <TextBlock Text="{Binding MotherOfTenant.FirstName}"></TextBlock>
+                    <TextBlock Text=" "></TextBlock>
+                    <TextBlock Text="{Binding MotherOfTenant.MiddleName}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Mother's Contact Number: "></TextBlock>
+                        <TextBlock Text="{Binding MotherOfTenant.ContactNumber}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

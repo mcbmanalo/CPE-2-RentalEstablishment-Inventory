@@ -1,0 +1,110 @@
+﻿<Window x:Class="Manalo_Project.Windows.AssignWorkerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manalo_Project.Windows"
+        mc:Ignorable="d"
+        DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment,Source={StaticResource Locator}}"
+        Title="Assign Workers" Height="360" Width="300" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1" 
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Margin="8">
+          
+            <Button Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding Path=CancelAssignWorkerCommand}"
+                    Content="Cancel"></Button>
+
+            <Button Width="140"
+                    Height="25"                
+                    Command="{Binding Path=AssignWorkersCommand}"
+                    Content="Assign Workers"></Button>
+        </StackPanel>
+
+        <StackPanel  Grid.Row="0" 
+                     Grid.Column="0"
+                     Margin="8">
+         
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Worker"></TextBlock>
+                <ComboBox ItemsSource="{Binding Path=VacantWorkers}"
+                          SelectedItem="{Binding Path=AssignWorkerVm.SelectedWorker, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayMemberPath="LastName">
+                </ComboBox>
+
+            </StackPanel>
+
+            <StackPanel  Margin="0,0,0,15">
+                <TextBlock Text="Job"></TextBlock>
+                <ComboBox ItemsSource="{Binding Path=AssignWorkerVm.JobOptions}"
+                          SelectedItem="{Binding Path=AssignWorkerVm.SelectedJob, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+
+            </StackPanel>
+            
+            <Button Height="25"
+                    Width="100"
+                    Command="{Binding Path=AddToAssignWorkerListCommand}"
+                    Content="Assign"
+                    HorizontalAlignment="Right"></Button>
+
+        </StackPanel>
+
+        <Grid Grid.Row="0"
+              Grid.Column="1"
+              Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+           
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Floor Number"></TextBlock>
+                <ComboBox ItemsSource="{Binding Path=Floors}"
+                          SelectedItem="{Binding Path=AssignWorkerVm.SelectedFloor, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Floor Number "></TextBlock>
+                                <TextBlock Text="{Binding Path=FloorNumber}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <Grid  Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Assigned Workers"
+                           Margin="0,0,0,5"></TextBlock>
+                <ListBox Grid.Row="1"
+                         ItemsSource="{Binding Path=AssignWorkerVm.WorkersToBeAssigned}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Path=LastName}"></TextBlock>
+                                <TextBlock Text="{Binding Path=Job}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

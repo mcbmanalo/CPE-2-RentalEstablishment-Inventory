@@ -1,0 +1,112 @@
+﻿<Window x:Class="Manalo_Project.Windows.AddWorkersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manalo_Project.Windows"
+        mc:Ignorable="d"
+        DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment,Source={StaticResource Locator}}"
+        Title="Add Workers" Height="400" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="8" DataContext="{Binding Path=AddWorkerVm.WorkerVM}">
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="First Name"></TextBlock>
+                <TextBox Text="{Binding Path=FirstName}"></TextBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Middle Name"></TextBlock>
+                <TextBox Text="{Binding Path=MiddleName}"></TextBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Last Name"></TextBlock>
+                <TextBox Text="{Binding Path=LastName}"></TextBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Age"></TextBlock>
+                <TextBox Text="{Binding Path=Age}"></TextBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Gender"></TextBlock>
+                <ComboBox ItemsSource="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.AddWorkerVm.GenderOptions,Source={StaticResource Locator}}"
+                          SelectedItem="{Binding Path=Gender}"></ComboBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Contact Number"></TextBlock>
+                <TextBox Text="{Binding Path=ContactNumber}"></TextBox>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Right">
+                <Button Width="100"
+                        Height="25"
+                        Command="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.AddWorkerVm.AddWorkerToListCommand,Source={StaticResource Locator}}"
+                        Content="Add"></Button>
+            </StackPanel>
+
+
+        </StackPanel>
+
+        <Grid Grid.Row="0" Grid.Column="1" Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Workers to be added" Margin="5,0,0,0"></TextBlock>
+            <ListBox Grid.Row="1" 
+                     Margin="5"
+                     ItemsSource="{Binding Path=AddWorkerVm.WorkersToBeAdded, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding Path=AddWorkerVm.SelectedWorker, UpdateSourceTrigger=PropertyChanged}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=FirstName}"></TextBlock>
+                                <TextBlock Text=" "></TextBlock>
+                                <TextBlock Text="{Binding Path=MiddleName[0]}"></TextBlock>
+                                <TextBlock Text=". "></TextBlock>
+                                <TextBlock Text="{Binding Path=LastName}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <StackPanel Grid.Row="1" 
+                    Orientation="Horizontal"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,14,6">
+            <Button Height="25"
+                    Width="80"
+                    Margin="0,0,5,0"
+                    Click="ButtonBase_OnClick"        
+                    Content="Cancel"></Button>
+            <Button Height="25"
+                    Width="140"
+                    Margin="0,0,5,0"
+                    Command="{Binding Path=AddWorkerVm.RemoveWorkerFromListCommand}"
+                    Content="Remove Worker"></Button>
+            <Button Height="25"
+                    Width="120"
+                    Command="{Binding Path=AddWorkersToEstabishmentCommand}"
+                    Content="Add Workers"></Button>
+
+        </StackPanel>
+    </Grid>
+</Window>

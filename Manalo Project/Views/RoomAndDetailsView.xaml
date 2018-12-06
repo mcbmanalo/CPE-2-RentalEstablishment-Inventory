@@ -1,0 +1,177 @@
+﻿<UserControl x:Class="Manalo_Project.Views.RoomAndDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Manalo_Project.Views"
+             mc:Ignorable="d"
+             DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment,Source={StaticResource Locator}}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Button Width="140"
+                    Height="25"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Content="Add Rooms"
+                    Command="{Binding Path=OpenAddRoomWindowCommand}"/>
+
+        <ComboBox HorizontalAlignment="Left"
+                  ToolTip="Filter for rooms"
+                  Height="25"
+                  Width="140"
+                  Margin="8,0,0,0"
+                  ItemsSource="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.DisplayOptions, Source={StaticResource Locator}}"
+                  SelectedItem="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.SelectedDisplayType,UpdateSourceTrigger=PropertyChanged ,Source={StaticResource Locator}}"></ComboBox>
+
+
+        <ListBox ItemsSource="{Binding Path=AllRooms}"
+                 SelectedItem="{Binding Path=SelectedRoomForDetails}"
+                 Margin="8"
+                 Grid.Row="1">
+
+            <ListBox.ContextMenu>
+                <ContextMenu DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.AllRooms ,Source={StaticResource Locator}}">
+
+                    <MenuItem Header="Sort" >
+                        <MenuItem Header="Room Number" Command="{Binding RentalEstablishmentModule.SelectedRentalEstablishment.SortRoomNumber,Source={StaticResource Locator}}"></MenuItem>
+                        <MenuItem Header="Room Type" Command="{Binding RentalEstablishmentModule.SelectedRentalEstablishment.SortRoomType,Source={StaticResource Locator}}"></MenuItem>
+                        <MenuItem Header="Room Capacity" Command="{Binding RentalEstablishmentModule.SelectedRentalEstablishment.SortRoomCapacity,Source={StaticResource Locator}}"></MenuItem>
+                        <MenuItem Header="Number of Occupants" Command="{Binding RentalEstablishmentModule.SelectedRentalEstablishment.SortNumberOfOccupants,Source={StaticResource Locator}}"></MenuItem>
+                    </MenuItem>
+
+                    <Separator />
+
+                    <MenuItem Header="Ascending" IsCheckable="True" IsChecked="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.IsAscending,Source={StaticResource Locator}, UpdateSourceTrigger=PropertyChanged}"></MenuItem>
+                    <MenuItem Header="Descending" IsCheckable="True" IsChecked="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.IsDescending,Source={StaticResource Locator}, UpdateSourceTrigger=PropertyChanged}"></MenuItem>
+
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        
+        <TextBlock Grid.Column="1"
+                   Grid.Row="1"
+                   Text="Please select a room"
+                   Foreground="Gray"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Visibility="{Binding Path=SelectedRoomForDetails, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"></TextBlock>
+
+        <StackPanel Grid.Column="1" 
+                    Grid.Row="1"
+                    Margin="8"
+                    Visibility="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.SelectedRoomForDetails,Source={StaticResource Locator}, Converter={StaticResource NullToVisibilityConverter}}"
+                    DataContext="{Binding Path=SelectedRoomForDetails, UpdateSourceTrigger=PropertyChanged}">
+
+            <TextBlock Text="Room's Information"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="10"
+                       HorizontalAlignment="Center"></TextBlock>
+
+            <StackPanel  Orientation="Horizontal"
+                         Margin="0,0,0,5">
+                <TextBlock Text="Floor Number: "></TextBlock>
+                <TextBlock Text="{Binding Path=FloorOfRoom.FloorNumber, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,5">
+                <TextBlock Text="Room Number: "></TextBlock>
+                <TextBlock Text="{Binding Path=RoomNumber, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,5">
+                <TextBlock Text="Room Type: "></TextBlock>
+                <TextBlock Text="{Binding Path=RoomType, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel  Orientation="Horizontal"
+                         Margin="0,0,0,5">
+                <TextBlock Text="Room Capacity: "></TextBlock>
+                <TextBlock Text="{Binding Path=RoomCapacity, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            </StackPanel>
+            
+            <StackPanel  Orientation="Horizontal"
+                         Margin="0,0,0,5">
+                <TextBlock Text="Room Price: "></TextBlock>
+                <TextBlock Text="{Binding Path=RoomPrice, StringFormat={}₱{0:N2}, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            </StackPanel>
+            
+            <StackPanel  Orientation="Horizontal"
+                         Margin="0,0,0,5">
+                <TextBlock Text="Room price for each person: "></TextBlock>
+                <TextBlock Text="{Binding Path=RoomPricePerPerson, StringFormat={}₱{0:N2}, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            </StackPanel>
+                   
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Occupants:"></TextBlock>
+                <ListBox ItemsSource="{Binding Path=Occupants, UpdateSourceTrigger=PropertyChanged}"
+                         BorderThickness="0"
+                         Margin="8,2,8,0"
+                         MaxHeight="{Binding Occupants, UpdateSourceTrigger=PropertyChanged}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=LastName, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <TextBlock Text=", "></TextBlock>
+                                <TextBlock Text="{Binding Path=FirstName, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <TextBlock Text=" "></TextBlock>
+                                <TextBlock Text="{Binding Path=MiddleName[0], UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                <TextBlock Text="."></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Room History:"></TextBlock>
+                <ListBox ItemsSource="{Binding Path=History, UpdateSourceTrigger=PropertyChanged}"
+                         BorderThickness="0"
+                         Margin="8,2,8,0"
+                         MaxHeight="{Binding History, UpdateSourceTrigger=PropertyChanged}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+
+                                <StackPanel Orientation="Horizontal" Margin="5" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Path=ExTenant.LastName, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                    <TextBlock Text=", "></TextBlock>
+                                    <TextBlock Text="{Binding Path=ExTenant.FirstName, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                    <TextBlock Text=" "></TextBlock>
+                                    <TextBlock Text="{Binding Path=ExTenant.MiddleName[0], UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                </StackPanel>
+
+                                <StackPanel VerticalAlignment="Center" Margin="5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Date Entered: "></TextBlock>
+                                        <TextBlock Text="{Binding Path=DateTimeEntered, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Date Left: "></TextBlock>
+                                        <TextBlock Text="{Binding Path=DateTimeLeft, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+                                    </StackPanel>
+
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+
+        </StackPanel>
+    </Grid>
+</UserControl>

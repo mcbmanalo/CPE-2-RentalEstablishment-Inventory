@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="Manalo_Project.Views.RentalEstablishmentsFrontView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Manalo_Project.Views"
+             mc:Ignorable="d" 
+             DataContext="{Binding Path=RentalEstablishmentModule,Source={StaticResource Locator}}"
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+
+            <TextBox Width="300" 
+                     Height="25"
+                     ToolTip="Search box for establishments"
+                     Margin="5,0,20,0"
+                     Text="{Binding Path=SearchRentalEstablishment, UpdateSourceTrigger=PropertyChanged, Delay=10}"></TextBox>
+            <Button  Width="150" 
+                     Height="25"
+                     Margin="5,0,5,0"
+                     Content="Add Establishment"
+                     Command="{Binding Path=OpenAddRentalWindowCommand}"></Button>
+         
+        </StackPanel>
+
+        <TextBlock Text="{Binding Source={StaticResource Tick} , Path=Now , Mode=OneWay}"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Right"
+                   Grid.Row="0"
+                   Grid.Column="1"
+                   Margin="0,0,20,0"></TextBlock>
+
+        <ListBox Grid.Row="1"
+                 Grid.Column="0" 
+                 SnapsToDevicePixels="False"
+                 Width="325" 
+                 Margin="8"
+                 ItemsSource="{Binding Path=OwnedRentalEstablishments}"
+                 SelectedItem="{Binding Path=SelectedRentalEstablishment, UpdateSourceTrigger=PropertyChanged}"></ListBox>
+
+        <TabControl Grid.Row="1" Grid.Column="1" Margin="8" Visibility="{Binding Path=SelectedRentalEstablishment, Converter={StaticResource NullToVisibilityConverter}}">
+
+            <TabItem Header="Tenants">
+                <local:TenantAndDetailsView/>
+            </TabItem>
+
+            <TabItem Header="Rooms">
+                <local:RoomAndDetailsView/>
+            </TabItem>
+
+            <TabItem Header="Floor">
+                <local:RentalEstablishmentFloorAndRoomDetailsView/>
+            </TabItem>
+            
+            <TabItem Header="Workers">
+                <local:WorkerAndDetailsView/>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</UserControl>

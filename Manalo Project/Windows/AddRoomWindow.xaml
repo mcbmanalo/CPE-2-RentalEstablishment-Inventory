@@ -1,0 +1,112 @@
+﻿<Window x:Class="Manalo_Project.AddRoomWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manalo_Project"
+        mc:Ignorable="d"
+        DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.AddRoomVm,Source={StaticResource Locator}}"
+        Title="Add Room" Height="350" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="8">
+            <Button Width="80"
+                    Height="25"
+                    Content="Cancel"
+                    Click="ButtonBase_OnClick"
+                    Margin="0,0,5,0"></Button>
+         
+            <Button Width="130"
+                    Height="25"
+                    Content="Remove Room"
+                    Command="{Binding Path=RemoveSelectedRoomCommand}"
+                    Margin="0,0,5,0"></Button>
+           
+            <Button Width="100"
+                    Height="25"
+                    Content="Add Rooms"
+                    Command="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.AddRoomsToFloorCommand,Source={StaticResource Locator}}"></Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="8">
+
+           
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Room Type"></TextBlock>
+                <ComboBox ItemsSource="{Binding Path=RoomTypeOptions}"
+                          SelectedItem="{Binding Path=NewRoom.RoomType,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"></ComboBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Room Number"></TextBlock>
+                <TextBox Text="{Binding Path=NewRoom.RoomNumber, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5">
+                <TextBlock Text="Room Price"></TextBlock>
+                <TextBox Text="{Binding Path=NewRoom.RoomPrice,StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            </StackPanel>
+
+            <Button Height="25"
+                    Width="80"
+                    HorizontalAlignment="Right"
+                    Content="Add"
+                    Command="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.AddRoomToListCommand,Source={StaticResource Locator}}"></Button>
+
+        </StackPanel>
+
+        <Grid Grid.Column="1"
+                 Grid.Row="0"
+                 Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="0,0,0,5" DataContext="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment,Source={StaticResource Locator}}">
+                <TextBlock Text="Floor Number"></TextBlock>
+                <ComboBox ItemsSource="{Binding Path=Floors}"
+                          SelectedItem="{Binding Path=RentalEstablishmentModule.SelectedRentalEstablishment.SelectedFloor,Source={StaticResource Locator}, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Floor Number "></TextBlock>
+                                <TextBlock Text="{Binding Path=FloorNumber}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+            </StackPanel>
+
+            <TextBlock Text="List of rooms to be added"
+                       Margin="0,0,0,5"
+                       Grid.Row="1"></TextBlock>
+          
+            <ListBox Grid.Row="2"
+                     ItemsSource="{Binding Path=RoomsToBeAdded}"
+                     SelectedItem="{Binding Path=SelectedRoom}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:Room}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=RoomType}"></TextBlock>
+                            <TextBlock Text="{Binding Path=RoomNumber}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+    </Grid>
+</Window>
